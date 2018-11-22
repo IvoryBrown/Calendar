@@ -1,0 +1,11 @@
+.label {
+	-fx-font-size: 15.0px;
+	-fx-font-weight: bold;
+	-fx-text-fill: 	#696969;
+	-fx-font-family: "Arial Narrow";
+}
+.label:hover {
+	-fx-background-color: #00BFFF;
+    -fx-background-radius: 24.0px;
+    -fx-text-fill: 	#F5F5F5;
+}
