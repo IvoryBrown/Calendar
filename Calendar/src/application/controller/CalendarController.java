@@ -1,17 +1,8 @@
 package application.controller;
 
 import java.net.URL;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.MonthDay;
-import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAdjusters;
-import java.time.temporal.WeekFields;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 import java.util.ResourceBundle;
 
 import application.setting.CalendarPaneMinMonthRight;
@@ -39,7 +30,8 @@ import javafx.scene.layout.HBox;
 public class CalendarController implements Initializable {
 
 	@FXML
-	private GridPane setActualGridPaneMonthLeft, setActualGridPaneMonthRight, setActualGridPaneWeekRight;
+	private GridPane setActualGridPaneMonthLeft, setActualGridPaneMonthRight, setActualGridPaneWeekRight,
+			actualDateGridPaneSunRight;
 	@FXML
 	private AnchorPane actualMonthAncorPaneLeft, actualDateAnchorPaneMonthRight, actualDateAnchorPaneWeekRight,
 			actualDateAnchorPaneSunRight;
@@ -49,9 +41,9 @@ public class CalendarController implements Initializable {
 	private ComboBox<String> calendarCmb;
 	@FXML
 	private Button previousMonthLeftBtn, nextMonthLeftBtn, iconCalendarBtn, setTodayAllBtn, nextMonthRightBtn,
-			previousMonthRightBtn, nextWeekRightBtn, previousWeekRightBtn;
+			previousMonthRightBtn, nextWeekRightBtn, previousWeekRightBtn, previousSunRightBtn, nextSunRightBtn;
 	@FXML
-	private HBox monthTurnerHBox, weekTurnerHBox;
+	private HBox monthTurnerHBox, weekTurnerHBox, sunTurnerHBox;
 
 	private LocalDate currentMonth;
 
@@ -89,8 +81,8 @@ public class CalendarController implements Initializable {
 			allListActualCalendarWeekRight.add(p);
 		}
 
-		populateCalendarLeft(yearMonth);
-		populateCalendarRight(yearMonth);
+		populateCalendarMonthLeft(yearMonth);
+		populateCalendarMonthRight(yearMonth);
 		populateCalendarWeekRight(yearMonth);
 	}
 
@@ -105,11 +97,12 @@ public class CalendarController implements Initializable {
 				p.getChildren().clear();
 			}
 			Label txt = new Label(String.valueOf(yearMonth.getDayOfMonth()));
+			txt.getStylesheets().add("/application/view/monthancorpane.css");
 			txt.setMinSize(37, 36);
 			txt.setAlignment(Pos.CENTER);
 			p.setDate(yearMonth);
 			p.setNumber(z += 1);
-			CalendarPaneWeekRight.setTopAnchor(txt, 3.0);
+			CalendarPaneWeekRight.setTopAnchor(txt, 35.0);
 			CalendarPaneWeekRight.setLeftAnchor(txt, 4.40);
 			p.getChildren().add(txt);
 			yearMonth = yearMonth.plusDays(1);
@@ -119,7 +112,7 @@ public class CalendarController implements Initializable {
 		getYearAndMonthLbl(yearMonth);
 	}
 
-	private void populateCalendarLeft(LocalDate yearMonth) {
+	private void populateCalendarMonthLeft(LocalDate yearMonth) {
 		calendarDate = LocalDate.of(yearMonth.getYear(), yearMonth.getMonthValue(), 1);
 		while (!calendarDate.getDayOfWeek().toString().equals("MONDAY")) {
 			calendarDate = calendarDate.minusDays(1);
@@ -145,7 +138,7 @@ public class CalendarController implements Initializable {
 		}
 	}
 
-	private void populateCalendarRight(LocalDate yearMonth) {
+	private void populateCalendarMonthRight(LocalDate yearMonth) {
 		calendarDate = LocalDate.of(yearMonth.getYear(), yearMonth.getMonthValue(), 1);
 		while (!calendarDate.getDayOfWeek().toString().equals("MONDAY")) {
 			calendarDate = calendarDate.minusDays(1);
@@ -193,8 +186,8 @@ public class CalendarController implements Initializable {
 	@FXML
 	private void previousMonth() {
 		currentMonth = currentMonth.minusMonths(1);
-		populateCalendarLeft(currentMonth);
-		populateCalendarRight(currentMonth);
+		populateCalendarMonthLeft(currentMonth);
+		populateCalendarMonthRight(currentMonth);
 		populateCalendarWeekRight(currentMonth);
 		System.out.println("Minuszhét " + currentMonth + " MinuszHonap " + currentMonth);
 	}
@@ -202,16 +195,16 @@ public class CalendarController implements Initializable {
 	@FXML
 	private void nextMonth() {
 		currentMonth = currentMonth.plusMonths(1);
-		populateCalendarLeft(currentMonth);
-		populateCalendarRight(currentMonth);
+		populateCalendarMonthLeft(currentMonth);
+		populateCalendarMonthRight(currentMonth);
 		populateCalendarWeekRight(currentMonth);
 		System.out.println("Pluszhét " + currentMonth + " PlusszHonap " + currentMonth);
 	}
 
 	@FXML
 	private void setTodayAll() {
-		populateCalendarLeft(LocalDate.now());
-		populateCalendarRight(LocalDate.now());
+		populateCalendarMonthLeft(LocalDate.now());
+		populateCalendarMonthRight(LocalDate.now());
 		populateCalendarWeekRight(LocalDate.now());
 		currentMonth = LocalDate.now();
 	}
@@ -219,8 +212,8 @@ public class CalendarController implements Initializable {
 	@FXML
 	private void previousWeek() {
 		currentMonth = currentMonth.minusWeeks(1);
-		populateCalendarLeft(currentMonth);
-		populateCalendarRight(currentMonth);
+		populateCalendarMonthLeft(currentMonth);
+		populateCalendarMonthRight(currentMonth);
 		populateCalendarWeekRight(currentMonth);
 		System.out.println("Minuszhét " + currentMonth + " MinuszHonap " + currentMonth);
 	}
@@ -228,10 +221,20 @@ public class CalendarController implements Initializable {
 	@FXML
 	private void nextWeek() {
 		currentMonth = currentMonth.plusWeeks(1);
-		populateCalendarLeft(currentMonth);
-		populateCalendarRight(currentMonth);
+		populateCalendarMonthLeft(currentMonth);
+		populateCalendarMonthRight(currentMonth);
 		populateCalendarWeekRight(currentMonth);
 		System.out.println("Pluszhét " + currentMonth + " PlusszHonap " + currentMonth);
+	}
+	
+	@FXML
+	private void previousSun() {
+		System.out.println("nap-");
+	}
+	
+	@FXML
+	private void nextSun() {
+		System.out.println("nap+");
 	}
 
 	private void setButtonImage() {
@@ -265,18 +268,21 @@ public class CalendarController implements Initializable {
 				actualDateAnchorPaneSunRight.setVisible(false);
 				monthTurnerHBox.setVisible(true);
 				weekTurnerHBox.setVisible(false);
+				sunTurnerHBox.setVisible(false);
 			} else if (calendarCmb.getSelectionModel().getSelectedItem().equals("Hét")) {
 				actualDateAnchorPaneMonthRight.setVisible(false);
 				actualDateAnchorPaneWeekRight.setVisible(true);
 				actualDateAnchorPaneSunRight.setVisible(false);
 				monthTurnerHBox.setVisible(false);
 				weekTurnerHBox.setVisible(true);
+				sunTurnerHBox.setVisible(false);
 			} else if (calendarCmb.getSelectionModel().getSelectedItem().equals("Nap")) {
 				actualDateAnchorPaneMonthRight.setVisible(false);
 				actualDateAnchorPaneWeekRight.setVisible(false);
 				actualDateAnchorPaneSunRight.setVisible(true);
 				monthTurnerHBox.setVisible(false);
 				weekTurnerHBox.setVisible(false);
+				sunTurnerHBox.setVisible(true);
 			}
 		});
 
