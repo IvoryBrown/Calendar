@@ -1,18 +1,18 @@
-package application.setting;
+package application.setting.sun;
 
 import java.time.LocalDate;
 
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 
-public class CalendarPaneWeekRight extends AnchorPane {
+public class CalendarPaneSunRight extends AnchorPane {
 	private LocalDate date;
 	private Integer number;
 	public static String sDate;
 
-	public CalendarPaneWeekRight(Node... children) {
+	public CalendarPaneSunRight(Node... children) {
 		super(children);
-		this.setOnMouseClicked(e -> System.out.println(date + "jobb hét1"));
+		this.setOnMouseClicked(e -> System.out.println(date + "jobbnap 1"));
 	}
 
 	public LocalDate getDate() {

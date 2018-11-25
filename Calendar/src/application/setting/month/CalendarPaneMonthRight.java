@@ -1,4 +1,4 @@
-package application.setting;
+package application.setting.month;
 
 import java.time.LocalDate;
 
@@ -8,12 +8,12 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
-public class CalendarPaneRight extends AnchorPane {
+public class CalendarPaneMonthRight extends AnchorPane {
 	private LocalDate date;
 	private Integer number;
 	public static String sDate;
 
-	public CalendarPaneRight(Node... children) {
+	public CalendarPaneMonthRight(Node... children) {
 		super(children);
 		this.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override

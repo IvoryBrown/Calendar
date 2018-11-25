@@ -1,18 +1,18 @@
-package application.setting;
+package application.setting.month;
 
 import java.time.LocalDate;
 
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 
-public class CalendarPaneMonthLeft extends AnchorPane {
+public class CalendarPaneMinMonthRight extends AnchorPane {
 	private LocalDate date;
 	private Integer number;
 	public static String sDate;
 
-	public CalendarPaneMonthLeft(Node... children) {
+	public CalendarPaneMinMonthRight(Node... children) {
 		super(children);
-		this.setOnMouseClicked(e -> System.out.println(date + "Bal"));
+		this.setOnMouseClicked(e -> System.out.println(date + "jobb 1"));
 	}
 
 	public LocalDate getDate() {

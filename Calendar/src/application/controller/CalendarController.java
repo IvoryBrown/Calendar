@@ -5,12 +5,15 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import application.setting.CalendarPaneMinMonthRight;
-import application.setting.CalendarPaneMonthLeft;
-import application.setting.CalendarPaneRight;
-import application.setting.CalendarPaneWeekRight;
-import application.setting.MonthSet;
+import application.setting.LabelSetCSS;
+import application.setting.month.CalendarPaneMinMonthRight;
+import application.setting.month.CalendarPaneMonthLeft;
+import application.setting.month.CalendarPaneMonthRight;
+import application.setting.month.MonthSetToString;
+import application.setting.month.SunSetToString;
+import application.setting.sun.CalendarPaneSunRight;
 import application.setting.tooltip.Popup;
+import application.setting.week.CalendarPaneWeekRight;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
@@ -48,8 +51,9 @@ public class CalendarController implements Initializable {
 	private LocalDate currentMonth;
 
 	private ArrayList<CalendarPaneMonthLeft> allListActualCalendarDaysLeft = new ArrayList<>(35);
-	private ArrayList<CalendarPaneRight> allListActualCalendarDaysRight = new ArrayList<>(35);
+	private ArrayList<CalendarPaneMonthRight> allListActualCalendarDaysRight = new ArrayList<>(35);
 	private ArrayList<CalendarPaneWeekRight> allListActualCalendarWeekRight = new ArrayList<>(7);
+	private ArrayList<CalendarPaneSunRight> allListActualCalendarSunRight = new ArrayList<>(1);
 	private LocalDate calendarDate;
 
 	public void FullCalendarView(LocalDate yearMonth) {
@@ -67,7 +71,7 @@ public class CalendarController implements Initializable {
 		setActualGridPaneMonthRight.setVgap(1);
 		for (int i = 0; i < 5; i++) {
 			for (int j = 0; j < 7; j++) {
-				CalendarPaneRight p = new CalendarPaneRight();
+				CalendarPaneMonthRight p = new CalendarPaneMonthRight();
 				setActualGridPaneMonthRight.add(p, j, i);
 				allListActualCalendarDaysRight.add(p);
 
@@ -80,10 +84,46 @@ public class CalendarController implements Initializable {
 			setActualGridPaneWeekRight.add(p, i, 0);
 			allListActualCalendarWeekRight.add(p);
 		}
+		actualDateGridPaneSunRight.setHgap(1);
+		actualDateGridPaneSunRight.setVgap(1);
+		CalendarPaneSunRight sun = new CalendarPaneSunRight();
+		actualDateGridPaneSunRight.add(sun, 0, 0);
+		allListActualCalendarSunRight.add(sun);
 
 		populateCalendarMonthLeft(yearMonth);
 		populateCalendarMonthRight(yearMonth);
 		populateCalendarWeekRight(yearMonth);
+		populateCalendarSunRight(yearMonth);
+	}
+
+	private void populateCalendarSunRight(LocalDate yearMonth) {
+		int z = 0;
+		System.out.println(yearMonth.getDayOfWeek() + " nap" + allListActualCalendarSunRight);
+		for (CalendarPaneSunRight p : allListActualCalendarSunRight) {
+			if (p.getChildren().size() != 0) {
+				p.getChildren().remove(0);
+				p.getChildren().clear();
+			}
+			Label txt = new Label(String.valueOf(yearMonth.getDayOfMonth()));
+			txt.setMinSize(37, 36);
+			txt.setAlignment(Pos.CENTER);
+			p.setDate(yearMonth);
+			p.setNumber(z += 1);
+			CalendarPaneSunRight.setTopAnchor(txt, 35.0);
+			CalendarPaneSunRight.setLeftAnchor(txt, 4.40);
+			p.getChildren().add(txt);
+			yearMonth = yearMonth.plusDays(1);
+			LabelSetCSS.setDateNextSunRigth(p, currentMonth, txt);
+			LabelSetCSS.setDateNowSunRigth(p, txt);
+			System.out.println(yearMonth.getDayOfWeek() + " nap");
+			Label sunString = new Label(String.valueOf(SunSetToString.setSun(yearMonth)));
+			sunString.setMinSize(37, 36);
+			sunString.setAlignment(Pos.CENTER);
+			CalendarPaneSunRight.setTopAnchor(sunString, 5.0);
+			CalendarPaneSunRight.setLeftAnchor(sunString, 4.40);
+			p.getChildren().add(sunString);
+		}
+		getYearAndMonthLbl(yearMonth);
 	}
 
 	private void populateCalendarWeekRight(LocalDate yearMonth) {
@@ -106,8 +146,8 @@ public class CalendarController implements Initializable {
 			CalendarPaneWeekRight.setLeftAnchor(txt, 4.40);
 			p.getChildren().add(txt);
 			yearMonth = yearMonth.plusDays(1);
-			MonthSet.setDateNextWeekRigth(p, currentMonth, txt);
-			MonthSet.setDateNowWeekRigth(p, txt);
+			LabelSetCSS.setDateNextWeekRigth(p, currentMonth, txt);
+			LabelSetCSS.setDateNowWeekRigth(p, txt);
 		}
 		getYearAndMonthLbl(yearMonth);
 	}
@@ -132,8 +172,8 @@ public class CalendarController implements Initializable {
 			CalendarPaneMonthLeft.setLeftAnchor(txt, 4.40);
 			p.getChildren().add(txt);
 			calendarDate = calendarDate.plusDays(1);
-			MonthSet.setDateNextLeft(p, currentMonth, txt);
-			MonthSet.setDateNowLeft(p, txt);
+			LabelSetCSS.setDateNextLeft(p, currentMonth, txt);
+			LabelSetCSS.setDateNowLeft(p, txt);
 
 		}
 	}
@@ -144,7 +184,7 @@ public class CalendarController implements Initializable {
 			calendarDate = calendarDate.minusDays(1);
 		}
 		int z = 0;
-		for (CalendarPaneRight p : allListActualCalendarDaysRight) {
+		for (CalendarPaneMonthRight p : allListActualCalendarDaysRight) {
 			if (p.getChildren().size() != 0) {
 				p.getChildren().remove(0);
 				p.getChildren().clear();
@@ -162,16 +202,18 @@ public class CalendarController implements Initializable {
 			lbl.getChildren().add(txt);
 			p.getChildren().add(lbl);
 			calendarDate = calendarDate.plusDays(1);
-			MonthSet.setDateNextRigth(p, currentMonth, txt);
-			MonthSet.setDateNowRigth(p, txt);
+			LabelSetCSS.setDateNextRigth(p, currentMonth, txt);
+			LabelSetCSS.setDateNowRigth(p, txt);
 		}
 
 	}
 
 	private void getYearAndMonthLbl(LocalDate yearMonth) {
 		yearMonth = currentMonth;
-		setYearAndMonthLblLeft.setText(String.valueOf(yearMonth.getYear() + ". " + MonthSet.setMonth(yearMonth)));
-		setYearAndMonthLblRight.setText(String.valueOf(yearMonth.getYear() + ". " + MonthSet.setMonth(yearMonth)));
+		setYearAndMonthLblLeft
+				.setText(String.valueOf(yearMonth.getYear() + ". " + MonthSetToString.setMonth(yearMonth)));
+		setYearAndMonthLblRight
+				.setText(String.valueOf(yearMonth.getYear() + ". " + MonthSetToString.setMonth(yearMonth)));
 
 	}
 
@@ -189,6 +231,7 @@ public class CalendarController implements Initializable {
 		populateCalendarMonthLeft(currentMonth);
 		populateCalendarMonthRight(currentMonth);
 		populateCalendarWeekRight(currentMonth);
+		populateCalendarSunRight(currentMonth);
 		System.out.println("Minuszhét " + currentMonth + " MinuszHonap " + currentMonth);
 	}
 
@@ -198,15 +241,17 @@ public class CalendarController implements Initializable {
 		populateCalendarMonthLeft(currentMonth);
 		populateCalendarMonthRight(currentMonth);
 		populateCalendarWeekRight(currentMonth);
+		populateCalendarSunRight(currentMonth);
 		System.out.println("Pluszhét " + currentMonth + " PlusszHonap " + currentMonth);
 	}
 
 	@FXML
 	private void setTodayAll() {
-		populateCalendarMonthLeft(LocalDate.now());
-		populateCalendarMonthRight(LocalDate.now());
-		populateCalendarWeekRight(LocalDate.now());
 		currentMonth = LocalDate.now();
+		populateCalendarMonthLeft(currentMonth);
+		populateCalendarMonthRight(currentMonth);
+		populateCalendarWeekRight(currentMonth);
+		populateCalendarSunRight(currentMonth);
 	}
 
 	@FXML
@@ -215,6 +260,7 @@ public class CalendarController implements Initializable {
 		populateCalendarMonthLeft(currentMonth);
 		populateCalendarMonthRight(currentMonth);
 		populateCalendarWeekRight(currentMonth);
+		populateCalendarSunRight(currentMonth);
 		System.out.println("Minuszhét " + currentMonth + " MinuszHonap " + currentMonth);
 	}
 
@@ -224,16 +270,27 @@ public class CalendarController implements Initializable {
 		populateCalendarMonthLeft(currentMonth);
 		populateCalendarMonthRight(currentMonth);
 		populateCalendarWeekRight(currentMonth);
+		populateCalendarSunRight(currentMonth);
 		System.out.println("Pluszhét " + currentMonth + " PlusszHonap " + currentMonth);
 	}
-	
+
 	@FXML
 	private void previousSun() {
+		currentMonth = currentMonth.minusDays(1);
+		populateCalendarMonthLeft(currentMonth);
+		populateCalendarMonthRight(currentMonth);
+		populateCalendarWeekRight(currentMonth);
+		populateCalendarSunRight(currentMonth);
 		System.out.println("nap-");
 	}
-	
+
 	@FXML
 	private void nextSun() {
+		currentMonth = currentMonth.plusDays(1);
+		populateCalendarMonthLeft(currentMonth);
+		populateCalendarMonthRight(currentMonth);
+		populateCalendarWeekRight(currentMonth);
+		populateCalendarSunRight(currentMonth);
 		System.out.println("nap+");
 	}
 
