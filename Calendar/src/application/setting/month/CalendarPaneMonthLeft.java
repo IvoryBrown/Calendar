@@ -12,7 +12,6 @@ public class CalendarPaneMonthLeft extends AnchorPane {
 
 	public CalendarPaneMonthLeft(Node... children) {
 		super(children);
-		this.setOnMouseClicked(e -> System.out.println(date + "Bal"));
 	}
 
 	public LocalDate getDate() {

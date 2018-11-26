@@ -22,7 +22,7 @@
                   <Button fx:id="nextMonthRightBtn" alignment="CENTER" contentDisplay="CENTER" maxHeight="35.0" maxWidth="50.0" minHeight="35.0" minWidth="50.0" mnemonicParsing="false" onAction="#nextMonth" prefHeight="35.0" prefWidth="50.0" stylesheets="@buttonmin.css" text="&gt;" />
                </children>
             </HBox>
-            <AnchorPane layoutX="161.0" layoutY="233.0" prefHeight="970.0" prefWidth="1600.0" style="-fx-background-color: #FF6347;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="310.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
+            <AnchorPane layoutX="161.0" layoutY="233.0" prefHeight="970.0" prefWidth="1600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="310.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
                <children>
                   <AnchorPane fx:id="actualDateAnchorPaneMonthRight" layoutX="467.0" layoutY="327.0" prefHeight="920.0" prefWidth="1290.0" style="-fx-background-color: #F0FFFF;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
@@ -180,7 +180,7 @@
                            <children>
                               <HBox prefHeight="100.0" prefWidth="200.0">
                                  <children>
-                                    <Label prefHeight="41.0" prefWidth="184.0" text="  Hétfő" textFill="DIMGRAY">
+                                    <Label prefHeight="41.0" prefWidth="184.0" text=" Hétfő" textFill="DIMGRAY">
                                        <font>
                                           <Font name="System Bold" size="25.0" />
                                        </font>
@@ -189,7 +189,7 @@
                               </HBox>
                               <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
                                  <children>
-                                    <Label prefHeight="41.0" prefWidth="184.0" text="Kedd" textFill="DIMGRAY">
+                                    <Label prefHeight="41.0" prefWidth="184.0" text=" Kedd" textFill="DIMGRAY">
                                        <font>
                                           <Font name="System Bold" size="25.0" />
                                        </font>
@@ -198,7 +198,7 @@
                               </HBox>
                               <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2">
                                  <children>
-                                    <Label prefHeight="41.0" prefWidth="184.0" text="Szerda" textFill="DIMGRAY">
+                                    <Label prefHeight="41.0" prefWidth="184.0" text=" Szerda" textFill="DIMGRAY">
                                        <font>
                                           <Font name="System Bold" size="25.0" />
                                        </font>
@@ -207,7 +207,7 @@
                               </HBox>
                               <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3">
                                  <children>
-                                    <Label prefHeight="41.0" prefWidth="184.0" text="Csütörtök" textFill="DIMGRAY">
+                                    <Label prefHeight="41.0" prefWidth="184.0" text=" Csütörtök" textFill="DIMGRAY">
                                        <font>
                                           <Font name="System Bold" size="25.0" />
                                        </font>
@@ -216,25 +216,25 @@
                               </HBox>
                               <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4">
                                  <children>
-                                    <Label prefHeight="41.0" prefWidth="184.0" text="Péntek" textFill="DIMGRAY">
+                                    <Label prefHeight="41.0" prefWidth="184.0" text=" Péntek" textFill="DIMGRAY">
                                        <font>
                                           <Font name="System Bold" size="25.0" />
                                        </font>
                                     </Label>
                                  </children>
                               </HBox>
-                              <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5">
+                              <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #e7f5e3;" GridPane.columnIndex="5">
                                  <children>
-                                    <Label prefHeight="41.0" prefWidth="184.0" text="Szombat" textFill="DIMGRAY">
+                                    <Label prefHeight="41.0" prefWidth="184.0" text=" Szombat" textFill="DIMGRAY">
                                        <font>
                                           <Font name="System Bold" size="25.0" />
                                        </font>
                                     </Label>
                                  </children>
                               </HBox>
-                              <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="6">
+                              <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #c5e5c8;" GridPane.columnIndex="6">
                                  <children>
-                                    <Label prefHeight="41.0" prefWidth="184.0" text="Vasárnap" textFill="DIMGRAY">
+                                    <Label prefHeight="41.0" prefWidth="184.0" text=" Vasárnap" textFill="DIMGRAY">
                                        <font>
                                           <Font name="System Bold" size="25.0" />
                                        </font>
@@ -290,7 +290,7 @@
                   </AnchorPane>
                </children>
             </AnchorPane>
-            <AnchorPane layoutY="50.0" prefHeight="920.0" prefWidth="310.0" style="-fx-background-color: #8A2BE2;">
+            <AnchorPane layoutY="50.0" prefHeight="920.0" prefWidth="310.0" style="-fx-background-color: #8A2BE2;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="50.0">
                <children>
                   <AnchorPane fx:id="actualMonthAncorPaneLeft" layoutY="74.0" prefHeight="279.0" prefWidth="311.0" style="-fx-background-color: #F0FFFF;" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
@@ -373,6 +373,7 @@
                         </HBox>
                      </children>
                   </AnchorPane>
+                  <AnchorPane layoutX="22.0" layoutY="279.0" prefHeight="641.0" prefWidth="311.0" style="-fx-background-color: #FFA07A;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="279.0" />
                </children>
             </AnchorPane>
             <Button fx:id="iconCalendarBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="2.0" maxHeight="50.0" maxWidth="50.0" minHeight="50.0" minWidth="50.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" />

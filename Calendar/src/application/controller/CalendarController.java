@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import application.setting.AnchorBackGround;
 import application.setting.LabelSetCSS;
 import application.setting.month.CalendarPaneMinMonthRight;
 import application.setting.month.CalendarPaneMonthLeft;
@@ -98,7 +99,9 @@ public class CalendarController implements Initializable {
 
 	private void populateCalendarSunRight(LocalDate yearMonth) {
 		int z = 0;
-		System.out.println(yearMonth.getDayOfWeek() + " nap" + allListActualCalendarSunRight);
+		Label sunString = new Label(String.valueOf(SunSetToString.setSun(yearMonth)));
+		sunString.setStyle(
+				"-fx-font-size: 18.0px; -fx-font-weight: bold; -fx-text-fill: 	#696969; -fx-font-family: 'Arial Narrow';");
 		for (CalendarPaneSunRight p : allListActualCalendarSunRight) {
 			if (p.getChildren().size() != 0) {
 				p.getChildren().remove(0);
@@ -115,8 +118,6 @@ public class CalendarController implements Initializable {
 			yearMonth = yearMonth.plusDays(1);
 			LabelSetCSS.setDateNextSunRigth(p, currentMonth, txt);
 			LabelSetCSS.setDateNowSunRigth(p, txt);
-			System.out.println(yearMonth.getDayOfWeek() + " nap");
-			Label sunString = new Label(String.valueOf(SunSetToString.setSun(yearMonth)));
 			sunString.setMinSize(37, 36);
 			sunString.setAlignment(Pos.CENTER);
 			CalendarPaneSunRight.setTopAnchor(sunString, 5.0);
@@ -148,8 +149,8 @@ public class CalendarController implements Initializable {
 			yearMonth = yearMonth.plusDays(1);
 			LabelSetCSS.setDateNextWeekRigth(p, currentMonth, txt);
 			LabelSetCSS.setDateNowWeekRigth(p, txt);
+			p.setOnMouseClicked(e -> getMonthWeekSunSet(p.getDate()));
 		}
-		getYearAndMonthLbl(yearMonth);
 	}
 
 	private void populateCalendarMonthLeft(LocalDate yearMonth) {
@@ -170,10 +171,12 @@ public class CalendarController implements Initializable {
 			p.setNumber(z += 1);
 			CalendarPaneMonthLeft.setTopAnchor(txt, 3.0);
 			CalendarPaneMonthLeft.setLeftAnchor(txt, 4.40);
+			AnchorBackGround.setDateNow(p);
 			p.getChildren().add(txt);
 			calendarDate = calendarDate.plusDays(1);
 			LabelSetCSS.setDateNextLeft(p, currentMonth, txt);
 			LabelSetCSS.setDateNowLeft(p, txt);
+			p.setOnMouseClicked(e -> getMonthWeekSunSet(p.getDate()));
 
 		}
 	}
@@ -189,21 +192,23 @@ public class CalendarController implements Initializable {
 				p.getChildren().remove(0);
 				p.getChildren().clear();
 			}
-			CalendarPaneMinMonthRight lbl = new CalendarPaneMinMonthRight();
-			lbl.setMinSize(37, 36);
+			CalendarPaneMinMonthRight minMonth = new CalendarPaneMinMonthRight();
+			minMonth.setMinSize(37, 36);
 			p.setDate(calendarDate);
-			lbl.setDate(calendarDate);
+			minMonth.setDate(calendarDate);
 			p.setNumber(z += 1);
-			CalendarPaneMinMonthRight.setTopAnchor(lbl, 3.0);
-			CalendarPaneMinMonthRight.setLeftAnchor(lbl, 4.40);
+			CalendarPaneMinMonthRight.setTopAnchor(minMonth, 3.0);
+			CalendarPaneMinMonthRight.setLeftAnchor(minMonth, 4.40);
 			Label txt = new Label(String.valueOf(calendarDate.getDayOfMonth()));
 			txt.setMinSize(37, 36);
 			txt.setAlignment(Pos.CENTER);
-			lbl.getChildren().add(txt);
-			p.getChildren().add(lbl);
+			minMonth.getChildren().add(txt);
+			AnchorBackGround.setDateNow(p);
+			p.getChildren().add(minMonth);
 			calendarDate = calendarDate.plusDays(1);
 			LabelSetCSS.setDateNextRigth(p, currentMonth, txt);
 			LabelSetCSS.setDateNowRigth(p, txt);
+			minMonth.setOnMouseClicked(e -> getMonthWeekSunSet(minMonth.getDate()));
 		}
 
 	}
@@ -223,6 +228,21 @@ public class CalendarController implements Initializable {
 
 	public void setAllCalendarDays(ArrayList<CalendarPaneMonthLeft> allCalendarDays) {
 		this.allListActualCalendarDaysLeft = allCalendarDays;
+	}
+
+	private void getMonthWeekSunSet(LocalDate yearMonth) {
+		currentMonth = yearMonth;
+		calendarCmb.setValue("Nap");
+		populateCalendarMonthLeft(currentMonth);
+		populateCalendarMonthRight(currentMonth);
+		populateCalendarWeekRight(currentMonth);
+		populateCalendarSunRight(currentMonth);
+		actualDateAnchorPaneMonthRight.setVisible(false);
+		actualDateAnchorPaneWeekRight.setVisible(false);
+		actualDateAnchorPaneSunRight.setVisible(true);
+		monthTurnerHBox.setVisible(false);
+		weekTurnerHBox.setVisible(false);
+		sunTurnerHBox.setVisible(true);
 	}
 
 	@FXML
@@ -310,6 +330,8 @@ public class CalendarController implements Initializable {
 		previousMonthRightBtn.setTooltip(new Popup("Elöző hónap"));
 		previousWeekRightBtn.setTooltip(new Popup("Elöző hét"));
 		nextWeekRightBtn.setTooltip(new Popup("Következő hét"));
+		previousSunRightBtn.setTooltip(new Popup("Elöző nap"));
+		nextSunRightBtn.setTooltip(new Popup("Következő nap"));
 		setTodayAllBtn.setTooltip(new Popup(String.valueOf(LocalDate.now())));
 	}
 

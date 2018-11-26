@@ -12,7 +12,6 @@ public class CalendarPaneMinMonthRight extends AnchorPane {
 
 	public CalendarPaneMinMonthRight(Node... children) {
 		super(children);
-		this.setOnMouseClicked(e -> System.out.println(date + "jobb 1"));
 	}
 
 	public LocalDate getDate() {

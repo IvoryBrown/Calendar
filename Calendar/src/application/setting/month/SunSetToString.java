@@ -6,7 +6,6 @@ public class SunSetToString {
 
 	public static String setSun(LocalDate sun) {
 		String sunString = String.valueOf(sun.getDayOfWeek().toString());
-		System.out.println(sunString + "át");
 		if (sun.getDayOfWeek().toString().equals("MONDAY")) {
 			sunString = "Hétfő";
 			return sunString;
