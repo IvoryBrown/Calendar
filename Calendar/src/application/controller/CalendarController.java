@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import application.disposition.main.DispositionMain;
 import application.setting.AnchorBackGround;
 import application.setting.LabelSetCSS;
 import application.setting.month.CalendarPaneMinMonthRight;
@@ -364,6 +365,13 @@ public class CalendarController implements Initializable {
 				sunTurnerHBox.setVisible(true);
 			}
 		});
+
+	}
+	
+	@FXML
+	private void dispositionScene() {
+		DispositionMain main = new DispositionMain();
+		main.start();
 
 	}
 
