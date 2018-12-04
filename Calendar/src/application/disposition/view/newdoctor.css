@@ -1,0 +1,42 @@
+.button {
+	-fx-border-color: transparent;
+	-fx-background-color: transparent;
+	-fx-font-size: 15.0px;
+	-fx-font-weight: bold;
+	-fx-font-family: "Arial Narrow";
+}
+
+.button:hover {
+	-fx-background-color: #00BFFF;
+    -fx-background-radius: 24.0px;
+    -fx-text-fill: 	#F5F5F5;
+    -fx-font-weight: bold;
+}
+
+.text-field{
+	-fx-background-color:  #c5e5c8;
+	-fx-text-fill: 	#696969;
+	-fx-font-size: 15.0px;
+	-fx-prompt-text-fill: gray;
+	-fx-font-weight: bold;
+}
+.text-field:hover{
+	-fx-background-color: #00BFFF;
+	-fx-font-size: 15.0px;
+    -fx-prompt-text-fill: #F5F5F5;
+    -fx-font-weight: bold;
+}
+
+.color-picker {
+    -fx-background-color: #c5e5c8;
+}
+
+.color-picker .arrow-button{
+    -fx-background-color: transparent;
+    -fx-border-style: none;
+}
+
+.color-picker .arrow-button:hover{
+    -fx-background-color: #00BFFF;
+    -fx-border-style: none;
+}
