@@ -9,4 +9,5 @@ public class ColorToHex {
 				(int) (color.getBlue() * 255));
 	}
 
+
 }

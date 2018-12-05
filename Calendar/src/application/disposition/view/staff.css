@@ -1,0 +1,19 @@
+.table-view {
+	-fx-background-color:  #c5e5c8;
+}
+
+.table-view .column-header-background .label {
+	-fx-background-color:  #c5e5c8;
+	-fx-font-size: 15.0;
+	-fx-text-fill: #696969;
+}
+
+.table-view .table-cell {
+	-fx-font-size: 13.0;
+	-fx-font-weight: bold;
+}
+
+.table-view .column-header {
+	-fx-background-color: #c5e5c8;
+}
+

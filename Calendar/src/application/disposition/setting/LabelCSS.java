@@ -11,5 +11,9 @@ public class LabelCSS {
 		return String.format("-fx-background-color: #9ACD32; -fx-font-weight: bold; -fx-text-fill: #004d00;");
 		
 	}
+	public String infoCSS() {
+		return String.format("-fx-background-color: #ffdd1a; -fx-font-weight: bold; -fx-text-fill: #DAA520;");
+		
+	}
 
 }

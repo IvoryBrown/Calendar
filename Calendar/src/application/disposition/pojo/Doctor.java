@@ -8,25 +8,38 @@ public class Doctor {
 	private final SimpleStringProperty doctorName;
 	private final SimpleStringProperty doctorTextColor;
 	private final SimpleStringProperty doctorBackgroundColor;
+	private final SimpleStringProperty doctorStatus;
 
 	public Doctor() {
 		this.doctorId = new SimpleStringProperty("");
 		this.doctorName = new SimpleStringProperty("");
 		this.doctorTextColor = new SimpleStringProperty("");
 		this.doctorBackgroundColor = new SimpleStringProperty("");
+		this.doctorStatus = new SimpleStringProperty("");
 	}
 
-	public Doctor(String doctorName, String doctorTextColor, String doctorBackgroundColor) {
+	public Doctor(String doctorName, String doctorStatus) {
 		this.doctorName = new SimpleStringProperty(doctorName);
-		this.doctorTextColor = new SimpleStringProperty(doctorTextColor);
-		this.doctorBackgroundColor = new SimpleStringProperty(doctorBackgroundColor);
+		this.doctorTextColor = new SimpleStringProperty("");
+		this.doctorBackgroundColor = new SimpleStringProperty("");
+		this.doctorStatus = new SimpleStringProperty(doctorStatus);
 		this.doctorId = new SimpleStringProperty("");
 	}
 
-	public Doctor(Integer doctorId, String doctorName, String doctorTextColor, String doctorBackgroundColor) {
+	public Doctor(String doctorName, String doctorTextColor, String doctorBackgroundColor,String doctorStatus) {
 		this.doctorName = new SimpleStringProperty(doctorName);
 		this.doctorTextColor = new SimpleStringProperty(doctorTextColor);
 		this.doctorBackgroundColor = new SimpleStringProperty(doctorBackgroundColor);
+		this.doctorStatus = new SimpleStringProperty(doctorStatus);
+		this.doctorId = new SimpleStringProperty("");
+	}
+
+	public Doctor(Integer doctorId, String doctorName, String doctorTextColor, String doctorBackgroundColor,
+			String doctorStatus) {
+		this.doctorName = new SimpleStringProperty(doctorName);
+		this.doctorTextColor = new SimpleStringProperty(doctorTextColor);
+		this.doctorBackgroundColor = new SimpleStringProperty(doctorBackgroundColor);
+		this.doctorStatus = new SimpleStringProperty(doctorStatus);
 		this.doctorId = new SimpleStringProperty(String.valueOf(doctorId));
 	}
 
@@ -60,5 +73,13 @@ public class Doctor {
 
 	public void setDoctorBackgroundColor(String doctorBackgroundColor) {
 		this.doctorBackgroundColor.set(doctorBackgroundColor);
+	}
+
+	public String getDoctorStatus() {
+		return this.doctorStatus.get();
+	}
+
+	public void setDoctorStatus(String doctorStatus) {
+		this.doctorStatus.set(doctorStatus);
 	}
 }

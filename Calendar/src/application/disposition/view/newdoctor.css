@@ -29,6 +29,7 @@
 
 .color-picker {
     -fx-background-color: #c5e5c8;
+       -fx-border-color: green;
 }
 
 .color-picker .arrow-button{
