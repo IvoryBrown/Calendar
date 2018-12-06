@@ -7,6 +7,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -14,11 +15,11 @@
    <children>
       <AnchorPane layoutX="68.0" layoutY="87.0" prefHeight="700.0" prefWidth="1081.0" style="-fx-background-color: #F0FFFF;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
          <children>
-            <AnchorPane layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="300.0" style="-fx-background-color: #c5e5c8;" stylesheets="@newdoctor.css" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0">
+            <AnchorPane layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="322.0" style="-fx-background-color: #c5e5c8;" stylesheets="@newdoctor.css" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0">
                <children>
                   <VBox layoutX="50.0" prefHeight="76.0" prefWidth="300.0" AnchorPane.bottomAnchor="124.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <Label alignment="CENTER" prefHeight="30.0" prefWidth="300.0" style="-fx-background-color: #A9A9A9;" text="Új Munkatárs" textFill="#f2efef">
+                        <Label alignment="CENTER" prefHeight="30.0" prefWidth="322.0" style="-fx-background-color: #A9A9A9;" text="Új Munkatárs" textFill="#f2efef">
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
@@ -38,7 +39,7 @@
                   </VBox>
                   <ColorPicker fx:id="doctorTextColor" layoutX="14.0" layoutY="77.0" prefHeight="30.0" prefWidth="135.0" />
                   
-                  <ColorPicker fx:id="doctorBackgroundColor" layoutX="153.0" layoutY="77.0" prefHeight="30.0" prefWidth="135.0" />
+                  <ColorPicker fx:id="doctorBackgroundColor" layoutX="173.0" layoutY="77.0" prefHeight="30.0" prefWidth="135.0" />
                   <Label fx:id="testLabel" alignment="CENTER" layoutX="50.0" layoutY="115.0" prefHeight="30.0" prefWidth="200.0" text="Teszt Szöveg">
                      <font>
                         <Font size="18.0" />
@@ -46,11 +47,11 @@
                   <Button fx:id="newDoctorSave" layoutX="110.0" layoutY="155.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="90.0" text="Mentés" />
                </children>
             </AnchorPane>
-            <AnchorPane layoutX="14.0" layoutY="230.0" prefHeight="185.0" prefWidth="300.0" stylesheets="@staff.css" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="230.0">
+            <AnchorPane layoutX="14.0" layoutY="230.0" prefHeight="185.0" prefWidth="322.0" stylesheets="@staff.css" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="230.0">
                <children>
                   <VBox layoutX="43.0" layoutY="-7.0" prefHeight="30.0" prefWidth="300.0" AnchorPane.bottomAnchor="154.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <Label alignment="CENTER" prefHeight="30.0" prefWidth="300.0" style="-fx-background-color: #A9A9A9;" text="Munkatársak" textFill="#f2efef">
+                        <Label alignment="CENTER" prefHeight="30.0" prefWidth="322.0" style="-fx-background-color: #A9A9A9;" text="Munkatársak" textFill="#f2efef">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
@@ -59,8 +60,25 @@
                   </VBox>
                   <TableView fx:id="staffDoctorTView" editable="true" layoutY="29.0" prefHeight="156.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0" />
                </children></AnchorPane>
-            <AnchorPane layoutX="14.0" layoutY="432.0" prefHeight="254.0" prefWidth="300.0" style="-fx-background-color: blue;" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="432.0" />
-            <AnchorPane layoutX="324.0" layoutY="14.0" prefHeight="672.0" prefWidth="962.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="328.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0" />
+            <AnchorPane layoutX="14.0" layoutY="432.0" prefHeight="254.0" prefWidth="322.0" style="-fx-background-color: #c5e5c8;" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="432.0">
+               <children>
+                  <VBox layoutX="70.0" layoutY="12.0" prefHeight="60.0" prefWidth="322.0" AnchorPane.bottomAnchor="164.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Label alignment="CENTER" prefHeight="30.0" prefWidth="322.0" style="-fx-background-color: #A9A9A9;" text="Időbeosztás" textFill="#f2efef">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="scheduleDocktorLabel" alignment="CENTER" prefHeight="30.0" prefWidth="322.0">
+                           <font>
+                              <Font name="Arial Black" size="15.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <HBox fx:id="testBox" layoutX="34.0" layoutY="98.0" prefHeight="30.0" prefWidth="322.0" AnchorPane.bottomAnchor="133.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0" />
+               </children></AnchorPane>
+            <AnchorPane layoutX="350.0" layoutY="14.0" prefHeight="642.0" prefWidth="936.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="350.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0" />
          </children>
       </AnchorPane>
       <VBox prefHeight="30.0" prefWidth="1300.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">

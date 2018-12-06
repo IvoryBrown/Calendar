@@ -1,13 +1,19 @@
 package application.disposition.controller;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
+
+import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXTimePicker;
 
 import application.disposition.database.DispositionDataBase;
 import application.disposition.pojo.Doctor;
 import application.disposition.setting.ColorToHex;
 import application.disposition.setting.LabelCSS;
 import javafx.beans.binding.Bindings;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -24,6 +30,7 @@ import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.HBox;
 
 public class DispositionController implements Initializable {
 
@@ -31,13 +38,16 @@ public class DispositionController implements Initializable {
 	private ColorPicker doctorTextColor, doctorBackgroundColor;
 	private String hexDoctorTextColor, hexDoctorBackgroundColor;
 	@FXML
-	private Label testLabel, showInfoLbl;
+	private Label testLabel, showInfoLbl, scheduleDocktorLabel;
 	@FXML
 	private TextField doctorNameTxt;
 	@FXML
 	private Button newDoctorSave;
 	@FXML
 	private TableView<Doctor> staffDoctorTView;
+	@FXML
+	private HBox testBox;
+
 	private TableColumn<Doctor, String> doctorNameColumn, doctorStatusColumn;
 	private DispositionDataBase db = new DispositionDataBase();
 	private LabelCSS labelCSS = new LabelCSS();
@@ -58,6 +68,7 @@ public class DispositionController implements Initializable {
 							doctorNameTxt.clear();
 							showInfoLbl.setText("Sikeres Mentés: Új Orvos");
 							showInfoLbl.setStyle(labelCSS.goodCSS());
+							System.out.println(hexDoctorBackgroundColor + " : " + hexDoctorTextColor);
 							setdataClearTable();
 						}
 						if (ke.getCode().equals(KeyCode.N)) {
@@ -85,6 +96,10 @@ public class DispositionController implements Initializable {
 	}
 
 	private void testTextColor() {
+		testLabel.setStyle("-fx-text-fill:" + ColorToHex.toRGBCode(doctorTextColor.getValue())
+				+ "; -fx-background-color:" + ColorToHex.toRGBCode(doctorBackgroundColor.getValue()));
+		hexDoctorTextColor = ColorToHex.toRGBCode(doctorTextColor.getValue());
+		hexDoctorBackgroundColor = ColorToHex.toRGBCode(doctorBackgroundColor.getValue());
 		doctorTextColor.setOnAction((e) -> {
 			testLabel.setStyle("-fx-text-fill:" + ColorToHex.toRGBCode(doctorTextColor.getValue())
 					+ "; -fx-background-color:" + ColorToHex.toRGBCode(doctorBackgroundColor.getValue()));
@@ -103,7 +118,7 @@ public class DispositionController implements Initializable {
 		doctorNameColumn.setCellValueFactory(new PropertyValueFactory<Doctor, String>("doctorName"));
 
 		doctorStatusColumn = new TableColumn<>("Aktív");
-		doctorStatusColumn.setMinWidth(90);
+		doctorStatusColumn.setMinWidth(95);
 		doctorStatusColumn.setCellValueFactory(i -> {
 			final String value = i.getValue().getDoctorStatus();
 			return Bindings.createObjectBinding(() -> value);
@@ -115,8 +130,11 @@ public class DispositionController implements Initializable {
 				Doctor doctor = (Doctor) d.getTableView().getItems().get(d.getTablePosition().getRow());
 				doctor.setDoctorStatus(d.getNewValue());
 				db.updateDoctor(doctor);
+				scheduleDocktorLabel.setText("");
+				setdataClearTable();
 			}
 		});
+
 		staffDoctorTView.setRowFactory(ts -> new TableRow<Doctor>() {
 			@Override
 			public void updateItem(Doctor item, boolean empty) {
@@ -125,11 +143,25 @@ public class DispositionController implements Initializable {
 					setStyle("");
 				} else {
 					setStyle("");
-					setStyle("-fx-text-background-color: " + item.getDoctorTextColor() + "; -fx-background-color: "
+					setStyle("-fx-text-fill:" + item.getDoctorTextColor() + "; -fx-background-color: "
 							+ item.getDoctorBackgroundColor() + ";");
 				}
 			}
 		});
+
+		staffDoctorTView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Doctor>() {
+			@Override
+			public void changed(ObservableValue<? extends Doctor> observable, Doctor oldValue, Doctor newValue) {
+				if (oldValue == null || newValue != null) {
+					if (newValue.getDoctorStatus().equals("Igen")) {
+						scheduleDocktorLabel.setText(newValue.getDoctorName());
+					} else {
+						scheduleDocktorLabel.setText("Nem aktív a munkatárs");
+					}
+				}
+			}
+		});
+
 	}
 
 	@SuppressWarnings("unchecked")
@@ -151,5 +183,14 @@ public class DispositionController implements Initializable {
 		newDoctorSave();
 		setStaffTable();
 		getDataStaffTable();
+		JFXDatePicker test1 = new JFXDatePicker(LocalDate.now());
+		testBox.getChildren().add(test1);
+		JFXTimePicker test = new JFXTimePicker();
+		test.set24HourView(true);
+		testBox.getChildren().add(test);
+		JFXTimePicker test3 = new JFXTimePicker();
+		test3.set24HourView(true);
+		testBox.getChildren().add(test3);
+		System.out.println(test1.getValue() + ":" + test.getValue());
 	}
 }
