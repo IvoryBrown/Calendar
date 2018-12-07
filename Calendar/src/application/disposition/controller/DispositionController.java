@@ -19,6 +19,7 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
@@ -139,12 +140,16 @@ public class DispositionController implements Initializable {
 			@Override
 			public void updateItem(Doctor item, boolean empty) {
 				super.updateItem(item, empty);
-				if (item == null) {
+				if (!isEmpty()) {
+					if (item == null) {
+						setStyle("");
+					}else {
+						setStyle("");
+						setStyle(" -fx-text-background-color: " + item.getDoctorTextColor() + "; -fx-background-color: "
+								+ item.getDoctorBackgroundColor() + ";");
+					}
+				}else {
 					setStyle("");
-				} else {
-					setStyle("");
-					setStyle("-fx-text-fill:" + item.getDoctorTextColor() + "; -fx-background-color: "
-							+ item.getDoctorBackgroundColor() + ";");
 				}
 			}
 		});
