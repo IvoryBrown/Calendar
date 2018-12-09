@@ -51,6 +51,46 @@ public class DispositionDataBase {
 		return doctor;
 	}
 
+	public ArrayList<Doctor> getAllDoctorSchedule() {
+		String sql = "SELECT * FROM `orvos` JOIN `rendeles` ON orvos_id = orvos_orvos_id ORDER BY `kezdes` DESC";
+		Connection con = DataBaseConnect.getConnection();
+		ArrayList<Doctor> doctor = null;
+		Statement createStatement = null;
+		ResultSet rs = null;
+		try {
+			createStatement = con.createStatement();
+			rs = createStatement.executeQuery(sql);
+			doctor = new ArrayList<>();
+
+			while (rs.next()) {
+				Doctor actualDoctor = new Doctor(rs.getInt("orvos_id"), rs.getString("orvos_nev"),
+						rs.getString("orvos_hater_szin"), rs.getString("orvos_betu_szin"), rs.getString("orvos_aktiv"),
+						rs.getString("beosztas_id"), rs.getString("kezdes"), rs.getString("befejzes"),
+						rs.getString("orvos_orvos_id"));
+				doctor.add(actualDoctor);
+			}
+		} catch (SQLException ex) {
+			System.out.println("Valami baj van a userek kiolvasásakor");
+			System.out.println("" + ex);
+			new ShowInfoError("Adatbázis Hiba", "Szerver válasza: ", ex.getMessage());
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (createStatement != null) {
+					createStatement.close();
+				}
+				if (con != null) {
+					con.close();
+				}
+			} catch (SQLException e) {
+				new ShowInfoError("Adatbázis Hiba", "Szerver válasza: ", e.getMessage());
+			}
+		}
+		return doctor;
+	}
+
 	public void addNewDoctor(Doctor doctor) {
 		Connection con = DataBaseConnect.getConnection();
 		PreparedStatement preparedStatement = null;
@@ -61,6 +101,34 @@ public class DispositionDataBase {
 			preparedStatement.setString(2, doctor.getDoctorBackgroundColor());
 			preparedStatement.setString(3, doctor.getDoctorTextColor());
 			preparedStatement.setString(4, doctor.getDoctorStatus());
+			preparedStatement.execute();
+		} catch (SQLException ex) {
+			new ShowInfoError("Adatbázis Hiba", "Szerver válasza: ", ex.getMessage());
+			System.out.println("Valami baj van a contact hozzáadásakor");
+			System.out.println("" + ex);
+		} finally {
+			try {
+				if (preparedStatement != null) {
+					preparedStatement.close();
+				}
+				if (con != null) {
+					con.close();
+				}
+			} catch (SQLException e) {
+				new ShowInfoError("Adatbázis Hiba", "Szerver válasza: ", e.getMessage());
+			}
+		}
+	}
+
+	public void addNewScheduleS(Doctor doctor) {
+		Connection con = DataBaseConnect.getConnection();
+		PreparedStatement preparedStatement = null;
+		try {
+			String sql = "INSERT INTO `rendeles` ( kezdes, befejzes, orvos_orvos_id) VALUES (?,?,?)";
+			preparedStatement = con.prepareStatement(sql);
+			preparedStatement.setString(1, doctor.getDoctorScheduleStartTime());
+			preparedStatement.setString(2, doctor.getDoctorScheduleEndTime());
+			preparedStatement.setString(3, doctor.getDoctorIddoctorScheduleId());
 			preparedStatement.execute();
 		} catch (SQLException ex) {
 			new ShowInfoError("Adatbázis Hiba", "Szerver válasza: ", ex.getMessage());
@@ -95,7 +163,7 @@ public class DispositionDataBase {
 		} catch (SQLException ex) {
 			System.out.println("Valami baj van a contact hozzáadásakor");
 			System.out.println("" + ex);
-		}finally {
+		} finally {
 			try {
 				if (preparedStatement != null) {
 					preparedStatement.close();

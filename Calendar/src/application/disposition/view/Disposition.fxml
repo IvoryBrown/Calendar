@@ -60,7 +60,7 @@
                   </VBox>
                   <TableView fx:id="staffDoctorTView" editable="true" layoutY="29.0" prefHeight="156.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0" />
                </children></AnchorPane>
-            <AnchorPane layoutX="14.0" layoutY="528.0" prefHeight="228.0" prefWidth="322.0" style="-fx-background-color: #c5e5c8;" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="528.0">
+            <AnchorPane layoutX="14.0" layoutY="528.0" prefHeight="228.0" prefWidth="322.0" style="-fx-background-color: #c5e5c8;" stylesheets="@newdoctor.css" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="528.0">
                <children>
                   <VBox layoutX="70.0" layoutY="12.0" minHeight="60.0" prefHeight="60.0" prefWidth="322.0" AnchorPane.bottomAnchor="164.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
@@ -76,9 +76,13 @@
                         </Label>
                      </children>
                   </VBox>
-                  <HBox fx:id="testBox" layoutX="34.0" layoutY="98.0" prefHeight="30.0" prefWidth="322.0" AnchorPane.bottomAnchor="133.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0" />
+                  <HBox fx:id="hBox" layoutX="34.0" layoutY="98.0" prefHeight="30.0" prefWidth="322.0" AnchorPane.bottomAnchor="133.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0" />
+                  <Button layoutX="116.0" layoutY="125.0" mnemonicParsing="false" onAction="#scheduleDataBaseAdd" prefHeight="30.0" prefWidth="90.0" text="Mentés" />
                </children></AnchorPane>
-            <AnchorPane layoutX="350.0" layoutY="14.0" prefHeight="642.0" prefWidth="936.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="350.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0" />
+            <AnchorPane layoutX="350.0" layoutY="14.0" prefHeight="642.0" prefWidth="936.0" style="-fx-background-color: #c5e5c8;" stylesheets="@staff.css" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="350.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+               <children>
+                  <TableView fx:id="scheduleTableView" layoutX="146.0" layoutY="314.0" prefHeight="742.0" prefWidth="936.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+               </children></AnchorPane>
          </children>
       </AnchorPane>
       <VBox prefHeight="30.0" prefWidth="1300.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">

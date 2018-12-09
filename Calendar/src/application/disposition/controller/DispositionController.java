@@ -1,7 +1,7 @@
 package application.disposition.controller;
 
 import java.net.URL;
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXDatePicker;
@@ -19,7 +19,6 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
@@ -37,7 +36,7 @@ public class DispositionController implements Initializable {
 
 	@FXML
 	private ColorPicker doctorTextColor, doctorBackgroundColor;
-	private String hexDoctorTextColor, hexDoctorBackgroundColor;
+	private String hexDoctorTextColor, hexDoctorBackgroundColor, idDoctor;
 	@FXML
 	private Label testLabel, showInfoLbl, scheduleDocktorLabel;
 	@FXML
@@ -45,14 +44,19 @@ public class DispositionController implements Initializable {
 	@FXML
 	private Button newDoctorSave;
 	@FXML
-	private TableView<Doctor> staffDoctorTView;
+	private TableView<Doctor> staffDoctorTView, scheduleTableView;
 	@FXML
-	private HBox testBox;
+	private HBox hBox;
+	private JFXTimePicker startTimePicker, endTimePicker;
+	private JFXDatePicker datePicker;
+	private boolean check = false;
 
 	private TableColumn<Doctor, String> doctorNameColumn, doctorStatusColumn;
+	private TableColumn<Doctor, Date> doctorStartDateColumn, doctorEndDateColumn;
 	private DispositionDataBase db = new DispositionDataBase();
 	private LabelCSS labelCSS = new LabelCSS();
 	private final ObservableList<Doctor> dataDoctor = FXCollections.observableArrayList();
+	private final ObservableList<Doctor> dataDoctorSchedule = FXCollections.observableArrayList();
 
 	private void newDoctorSave() {
 		newDoctorSave.setOnAction(evt -> {
@@ -69,7 +73,6 @@ public class DispositionController implements Initializable {
 							doctorNameTxt.clear();
 							showInfoLbl.setText("Sikeres Mentés: Új Orvos");
 							showInfoLbl.setStyle(labelCSS.goodCSS());
-							System.out.println(hexDoctorBackgroundColor + " : " + hexDoctorTextColor);
 							setdataClearTable();
 						}
 						if (ke.getCode().equals(KeyCode.N)) {
@@ -143,12 +146,12 @@ public class DispositionController implements Initializable {
 				if (!isEmpty()) {
 					if (item == null) {
 						setStyle("");
-					}else {
+					} else {
 						setStyle("");
 						setStyle(" -fx-text-background-color: " + item.getDoctorTextColor() + "; -fx-background-color: "
 								+ item.getDoctorBackgroundColor() + ";");
 					}
-				}else {
+				} else {
 					setStyle("");
 				}
 			}
@@ -159,8 +162,11 @@ public class DispositionController implements Initializable {
 			public void changed(ObservableValue<? extends Doctor> observable, Doctor oldValue, Doctor newValue) {
 				if (oldValue == null || newValue != null) {
 					if (newValue.getDoctorStatus().equals("Igen")) {
+						check = true;
 						scheduleDocktorLabel.setText(newValue.getDoctorName());
+						idDoctor = newValue.getDoctorId();
 					} else {
+						check = false;
 						scheduleDocktorLabel.setText("Nem aktív a munkatárs");
 					}
 				}
@@ -182,20 +188,134 @@ public class DispositionController implements Initializable {
 		dataDoctor.addAll(db.getAllDoctor());
 	}
 
+	private void scheduleDataBase() {
+		datePicker = new JFXDatePicker();
+		hBox.getChildren().add(datePicker);
+		startTimePicker = new JFXTimePicker();
+		startTimePicker.setMaxHeight(30);
+		startTimePicker.setMaxWidth(130);
+		startTimePicker.set24HourView(true);
+		hBox.getChildren().add(startTimePicker);
+		endTimePicker = new JFXTimePicker();
+		endTimePicker.setMaxHeight(30);
+		endTimePicker.setMaxWidth(130);
+		endTimePicker.set24HourView(true);
+		hBox.getChildren().add(endTimePicker);
+	}
+
+	private boolean checkDate() {
+		if (startTimePicker.getValue() != null || endTimePicker.getValue() != null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	private boolean checkTime() {
+		String s = startTimePicker.getEditor().getText();
+		int startTime = Integer.valueOf(s.substring(0, 2));
+		String e = endTimePicker.getEditor().getText();
+		int endTime = Integer.valueOf(e.substring(0, 2));
+		if (startTime <= endTime) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	@FXML
+	private void scheduleDataBaseAdd() {
+
+		if (!scheduleDocktorLabel.getText().trim().isEmpty()) {
+			if (check) {
+				if (checkDate()) {
+					if (checkTime()) {
+						Doctor doctor = new Doctor(datePicker.getValue() + " " + startTimePicker.getValue(),
+								datePicker.getValue() + " " + endTimePicker.getValue(), idDoctor);
+						db.addNewScheduleS(doctor);
+						showInfoLbl.setText("Sikeres Mentés: Új beosztás elkészült");
+						showInfoLbl.setStyle(labelCSS.goodCSS());
+						scheduleDocktorLabel.setText("");
+						startTimePicker.setValue(null);
+						endTimePicker.setValue(null);
+						datePicker.setValue(null);
+					} else {
+						showInfoLbl.setText("Sikertelen Beosztás: Idő hibás");
+						showInfoLbl.setStyle(labelCSS.errorCSS());
+					}
+
+				} else {
+					showInfoLbl.setText("Sikertelen Beosztás: Dátum hibás");
+					showInfoLbl.setStyle(labelCSS.errorCSS());
+				}
+
+			} else {
+				showInfoLbl.setText("Sikertelen Beosztás: Nem aktív már a dolgozó");
+				showInfoLbl.setStyle(labelCSS.errorCSS());
+			}
+		} else {
+			showInfoLbl.setText("Sikertelen Beosztás: Nincs dolgozó kiválasztva");
+			showInfoLbl.setStyle(labelCSS.errorCSS());
+		}
+
+	}
+
+	private void setScheduleTable() {
+		doctorNameColumn = new TableColumn<>("Név");
+		doctorNameColumn.setMinWidth(250);
+		doctorNameColumn.setCellValueFactory(new PropertyValueFactory<Doctor, String>("doctorName"));
+
+		doctorStatusColumn = new TableColumn<>("Aktív");
+		doctorStatusColumn.setMinWidth(95);
+		doctorStatusColumn.setCellValueFactory(i -> {
+			final String value = i.getValue().getDoctorStatus();
+			return Bindings.createObjectBinding(() -> value);
+		});
+
+		doctorStartDateColumn = new TableColumn<>("Kezdés");
+		doctorStartDateColumn.setMinWidth(150);
+		doctorStartDateColumn.setCellValueFactory(new PropertyValueFactory<Doctor, Date>("doctorScheduleStartTime"));
+
+		doctorEndDateColumn = new TableColumn<>("Befejezés");
+		doctorEndDateColumn.setMinWidth(150);
+		doctorEndDateColumn.setCellValueFactory(new PropertyValueFactory<Doctor, Date>("doctorScheduleEndTime"));
+
+		scheduleTableView.setRowFactory(ts -> new TableRow<Doctor>() {
+			@Override
+			public void updateItem(Doctor item, boolean empty) {
+				super.updateItem(item, empty);
+				if (!isEmpty()) {
+					if (item == null) {
+						setStyle("");
+					} else {
+						setStyle("");
+						setStyle(" -fx-text-background-color: " + item.getDoctorTextColor() + "; -fx-background-color: "
+								+ item.getDoctorBackgroundColor() + ";");
+					}
+				} else {
+					setStyle("");
+				}
+			}
+		});
+	}
+
+	@SuppressWarnings("unchecked")
+	private void getDataScheduleTable() {
+		scheduleTableView.setItems(dataDoctorSchedule);
+		scheduleTableView.getColumns().addAll(doctorNameColumn, doctorStatusColumn, doctorStartDateColumn,
+				doctorEndDateColumn);
+		dataDoctorSchedule.addAll(db.getAllDoctorSchedule());
+
+	}
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		testTextColor();
 		newDoctorSave();
 		setStaffTable();
 		getDataStaffTable();
-		JFXDatePicker test1 = new JFXDatePicker(LocalDate.now());
-		testBox.getChildren().add(test1);
-		JFXTimePicker test = new JFXTimePicker();
-		test.set24HourView(true);
-		testBox.getChildren().add(test);
-		JFXTimePicker test3 = new JFXTimePicker();
-		test3.set24HourView(true);
-		testBox.getChildren().add(test3);
-		System.out.println(test1.getValue() + ":" + test.getValue());
+		scheduleDataBase();
+		setScheduleTable();
+		getDataScheduleTable();
 	}
 }
