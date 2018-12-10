@@ -178,4 +178,31 @@ public class DispositionDataBase {
 			}
 		}
 	}
+	
+	public void removeContact(Doctor doctor) {
+		Connection conn = DataBaseConnect.getConnection();
+		PreparedStatement preparedStatement = null;
+		try {
+			String sql = null;
+			sql = "DELETE FROM `rendeles` WHERE beosztas_id = ?";
+
+			preparedStatement = conn.prepareStatement(sql);
+			preparedStatement.setInt(1, Integer.parseInt(doctor.getDoctorScheduleId()));
+			preparedStatement.execute();
+		} catch (SQLException ex) {
+			System.out.println("Valami baj van a eszköz törlésekor");
+			System.out.println("" + ex);
+		} finally {
+			try {
+				if (preparedStatement != null) {
+					preparedStatement.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				new ShowInfoError("Adatbázis Hiba", "Szerver válasza: ", e.getMessage());
+			}
+		}
+	}
 }

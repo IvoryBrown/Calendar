@@ -87,7 +87,7 @@
       </AnchorPane>
       <VBox prefHeight="30.0" prefWidth="1300.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label fx:id="showInfoLbl" alignment="CENTER" prefHeight="30.0" prefWidth="3000.0" text="Label">
+            <Label fx:id="showInfoLbl" alignment="CENTER" prefHeight="30.0" prefWidth="3000.0">
                <VBox.margin>
                   <Insets />
                </VBox.margin>

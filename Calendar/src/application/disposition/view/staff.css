@@ -28,6 +28,13 @@
 	-fx-opacity: 0.0;
 }
 
+.table-row-cell{ 
+    -fx-table-cell-border-color: transparent;
+}
+.table-view .filler {
+	-fx-background-color:  #c5e5c8;
+}
+
 .combo-box{
     -fx-background-color: transparent;
     -fx-padding: 3.0 0.0 2.0 7.0;
@@ -65,3 +72,18 @@
     -fx-background-color:  #00BFFF;
     -fx-text-fill: #696969;
  }
+ 
+ .button {
+	-fx-border-color: transparent;
+	-fx-background-color: transparent;
+	-fx-font-size: 15.0px;
+	-fx-font-weight: bold;
+	-fx-font-family: "Arial Narrow";
+}
+
+.button:hover {
+	-fx-background-color: #00BFFF;
+    -fx-background-radius: 24.0px;
+    -fx-text-fill: 	#F5F5F5;
+    -fx-font-weight: bold;
+}

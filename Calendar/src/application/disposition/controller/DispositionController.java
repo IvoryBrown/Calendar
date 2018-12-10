@@ -2,6 +2,7 @@ package application.disposition.controller;
 
 import java.net.URL;
 import java.util.Date;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXDatePicker;
@@ -16,12 +17,18 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -31,6 +38,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.stage.StageStyle;
+import javafx.util.Callback;
 
 public class DispositionController implements Initializable {
 
@@ -51,7 +61,7 @@ public class DispositionController implements Initializable {
 	private JFXDatePicker datePicker;
 	private boolean check = false;
 
-	private TableColumn<Doctor, String> doctorNameColumn, doctorStatusColumn;
+	private TableColumn<Doctor, String> doctorNameColumn, doctorStatusColumn,removeCol;
 	private TableColumn<Doctor, Date> doctorStartDateColumn, doctorEndDateColumn;
 	private DispositionDataBase db = new DispositionDataBase();
 	private LabelCSS labelCSS = new LabelCSS();
@@ -73,7 +83,7 @@ public class DispositionController implements Initializable {
 							doctorNameTxt.clear();
 							showInfoLbl.setText("Sikeres Mentés: Új Orvos");
 							showInfoLbl.setStyle(labelCSS.goodCSS());
-							setdataClearTable();
+							removeDataClearTable();
 						}
 						if (ke.getCode().equals(KeyCode.N)) {
 							doctorNameTxt.clear();
@@ -135,7 +145,7 @@ public class DispositionController implements Initializable {
 				doctor.setDoctorStatus(d.getNewValue());
 				db.updateDoctor(doctor);
 				scheduleDocktorLabel.setText("");
-				setdataClearTable();
+				removeDataClearTable();
 			}
 		});
 
@@ -183,7 +193,7 @@ public class DispositionController implements Initializable {
 
 	}
 
-	private void setdataClearTable() {
+	private void removeDataClearTable() {
 		dataDoctor.clear();
 		dataDoctor.addAll(db.getAllDoctor());
 	}
@@ -213,9 +223,9 @@ public class DispositionController implements Initializable {
 
 	private boolean checkTime() {
 		String s = startTimePicker.getEditor().getText();
-		int startTime = Integer.valueOf(s.substring(0, 2));
+		int startTime = Integer.valueOf(s.substring(0, s.indexOf(":")));
 		String e = endTimePicker.getEditor().getText();
-		int endTime = Integer.valueOf(e.substring(0, 2));
+		int endTime = Integer.valueOf(e.substring(0, e.indexOf(":")));
 		if (startTime <= endTime) {
 			return true;
 		} else {
@@ -239,6 +249,7 @@ public class DispositionController implements Initializable {
 						startTimePicker.setValue(null);
 						endTimePicker.setValue(null);
 						datePicker.setValue(null);
+						remuveDataScheduleTable();
 					} else {
 						showInfoLbl.setText("Sikertelen Beosztás: Idő hibás");
 						showInfoLbl.setStyle(labelCSS.errorCSS());
@@ -279,7 +290,49 @@ public class DispositionController implements Initializable {
 		doctorEndDateColumn = new TableColumn<>("Befejezés");
 		doctorEndDateColumn.setMinWidth(150);
 		doctorEndDateColumn.setCellValueFactory(new PropertyValueFactory<Doctor, Date>("doctorScheduleEndTime"));
-
+		
+		removeCol  = new TableColumn<>("Törlés");
+		removeCol.setMinWidth(100);
+		Callback<TableColumn<Doctor, String>, TableCell<Doctor, String>> cellFactory = new Callback<TableColumn<Doctor, String>, TableCell<Doctor, String>>() {
+			@Override
+			public TableCell<Doctor, String> call(final TableColumn<Doctor, String> param) {
+				final TableCell<Doctor, String> cell = new TableCell<Doctor, String>() {
+					final Button btn = new Button("Törlés");
+				
+					@Override
+					public void updateItem(String item, boolean empty) {
+						
+					super.updateItem(item, empty);
+						if (empty) {
+							setGraphic(null);
+							setText(null);
+						} else {
+							btn.setOnAction((ActionEvent event) -> {
+								Alert alert = new Alert(AlertType.CONFIRMATION);
+								alert.setTitle("Törlés");
+								alert.setHeaderText("");
+								alert.getDialogPane().getStylesheets().add("/application/setting/showinfo/ShowInfo.css");
+								alert.initStyle(StageStyle.TRANSPARENT);
+								String s = "Biztos törölni szeretnéd ?";
+								alert.setContentText(s);
+								Optional<ButtonType> result = alert.showAndWait();
+								if ((result.isPresent()) && (result.get() == ButtonType.OK)) {
+									Doctor doctor = getTableView().getItems().get(getIndex());
+									dataDoctorSchedule.remove(doctor);
+									db.removeContact(doctor);
+								}
+							});
+							setGraphic(btn);
+							setText(null);
+						}
+					}
+				};
+				cell.setAlignment(Pos.CENTER);
+				return cell;
+			}
+		};
+		removeCol.setCellFactory(cellFactory);
+		
 		scheduleTableView.setRowFactory(ts -> new TableRow<Doctor>() {
 			@Override
 			public void updateItem(Doctor item, boolean empty) {
@@ -303,9 +356,14 @@ public class DispositionController implements Initializable {
 	private void getDataScheduleTable() {
 		scheduleTableView.setItems(dataDoctorSchedule);
 		scheduleTableView.getColumns().addAll(doctorNameColumn, doctorStatusColumn, doctorStartDateColumn,
-				doctorEndDateColumn);
+				doctorEndDateColumn,removeCol);
 		dataDoctorSchedule.addAll(db.getAllDoctorSchedule());
 
+	}
+	
+	private void remuveDataScheduleTable() {
+		dataDoctorSchedule.clear();
+		dataDoctorSchedule.addAll(db.getAllDoctorSchedule());
 	}
 
 	@Override
