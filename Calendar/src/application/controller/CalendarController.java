@@ -178,9 +178,10 @@ public class CalendarController implements Initializable {
 			LabelSetCSS.setDateNextLeft(p, currentMonth, txt);
 			LabelSetCSS.setDateNowLeft(p, txt);
 			p.setOnMouseClicked(e -> getMonthWeekSunSet(p.getDate()));
-
+			
 		}
 	}
+
 
 	private void populateCalendarMonthRight(LocalDate yearMonth) {
 		calendarDate = LocalDate.of(yearMonth.getYear(), yearMonth.getMonthValue(), 1);
@@ -210,6 +211,7 @@ public class CalendarController implements Initializable {
 			LabelSetCSS.setDateNextRigth(p, currentMonth, txt);
 			LabelSetCSS.setDateNowRigth(p, txt);
 			minMonth.setOnMouseClicked(e -> getMonthWeekSunSet(minMonth.getDate()));
+			new CalendarMonthLeft(p.getDate(),p);
 		}
 
 	}

@@ -1,6 +1,10 @@
 package application.disposition.controller;
 
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -38,7 +42,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
 
@@ -61,7 +64,7 @@ public class DispositionController implements Initializable {
 	private JFXDatePicker datePicker;
 	private boolean check = false;
 
-	private TableColumn<Doctor, String> doctorNameColumn, doctorStatusColumn,removeCol;
+	private TableColumn<Doctor, String> doctorNameColumn, doctorStatusColumn, removeCol;
 	private TableColumn<Doctor, Date> doctorStartDateColumn, doctorEndDateColumn;
 	private DispositionDataBase db = new DispositionDataBase();
 	private LabelCSS labelCSS = new LabelCSS();
@@ -290,19 +293,19 @@ public class DispositionController implements Initializable {
 		doctorEndDateColumn = new TableColumn<>("Befejezés");
 		doctorEndDateColumn.setMinWidth(150);
 		doctorEndDateColumn.setCellValueFactory(new PropertyValueFactory<Doctor, Date>("doctorScheduleEndTime"));
-		
-		removeCol  = new TableColumn<>("Törlés");
+
+		removeCol = new TableColumn<>("Törlés");
 		removeCol.setMinWidth(100);
 		Callback<TableColumn<Doctor, String>, TableCell<Doctor, String>> cellFactory = new Callback<TableColumn<Doctor, String>, TableCell<Doctor, String>>() {
 			@Override
 			public TableCell<Doctor, String> call(final TableColumn<Doctor, String> param) {
 				final TableCell<Doctor, String> cell = new TableCell<Doctor, String>() {
 					final Button btn = new Button("Törlés");
-				
+
 					@Override
 					public void updateItem(String item, boolean empty) {
-						
-					super.updateItem(item, empty);
+
+						super.updateItem(item, empty);
 						if (empty) {
 							setGraphic(null);
 							setText(null);
@@ -311,7 +314,8 @@ public class DispositionController implements Initializable {
 								Alert alert = new Alert(AlertType.CONFIRMATION);
 								alert.setTitle("Törlés");
 								alert.setHeaderText("");
-								alert.getDialogPane().getStylesheets().add("/application/setting/showinfo/ShowInfo.css");
+								alert.getDialogPane().getStylesheets()
+										.add("/application/setting/showinfo/ShowInfo.css");
 								alert.initStyle(StageStyle.TRANSPARENT);
 								String s = "Biztos törölni szeretnéd ?";
 								alert.setContentText(s);
@@ -325,6 +329,7 @@ public class DispositionController implements Initializable {
 							setGraphic(btn);
 							setText(null);
 						}
+						
 					}
 				};
 				cell.setAlignment(Pos.CENTER);
@@ -332,7 +337,10 @@ public class DispositionController implements Initializable {
 			}
 		};
 		removeCol.setCellFactory(cellFactory);
-		
+
+		LocalDateTime dateTime = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		String formattedDateTime = dateTime.format(formatter);
 		scheduleTableView.setRowFactory(ts -> new TableRow<Doctor>() {
 			@Override
 			public void updateItem(Doctor item, boolean empty) {
@@ -344,6 +352,10 @@ public class DispositionController implements Initializable {
 						setStyle("");
 						setStyle(" -fx-text-background-color: " + item.getDoctorTextColor() + "; -fx-background-color: "
 								+ item.getDoctorBackgroundColor() + ";");
+						if (sDate(item.getDoctorScheduleStartTime()).before(sDate(formattedDateTime))) {
+							setStyle(" -fx-text-background-color: #f2efef ; -fx-background-color: #A9A9A9;");
+						}
+
 					}
 				} else {
 					setStyle("");
@@ -352,15 +364,26 @@ public class DispositionController implements Initializable {
 		});
 	}
 
+	public Date sDate(String sDate) {
+		Date date = null;
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		try {
+			date = simpleDateFormat.parse(sDate);
+		} catch (ParseException ex) {
+			System.out.println("Exception " + ex);
+		}
+		return date;
+	}
+
 	@SuppressWarnings("unchecked")
 	private void getDataScheduleTable() {
 		scheduleTableView.setItems(dataDoctorSchedule);
 		scheduleTableView.getColumns().addAll(doctorNameColumn, doctorStatusColumn, doctorStartDateColumn,
-				doctorEndDateColumn,removeCol);
+				doctorEndDateColumn, removeCol);
 		dataDoctorSchedule.addAll(db.getAllDoctorSchedule());
 
 	}
-	
+
 	private void remuveDataScheduleTable() {
 		dataDoctorSchedule.clear();
 		dataDoctorSchedule.addAll(db.getAllDoctorSchedule());

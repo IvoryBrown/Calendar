@@ -14,7 +14,7 @@ public class Teszt extends Application {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/disposition/view/Disposition.fxml"));
 			Parent root = (Parent) loader.load();
 			primaryStage.setWidth(1300);
-			primaryStage.setHeight(900);
+			primaryStage.setHeight(700);
 			
 			primaryStage.setTitle("Beosztás");
 			primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/application/view/calendar.png")));
