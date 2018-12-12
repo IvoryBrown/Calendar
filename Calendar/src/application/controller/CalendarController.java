@@ -58,7 +58,8 @@ public class CalendarController implements Initializable {
 	private ArrayList<CalendarPaneSunRight> allListActualCalendarSunRight = new ArrayList<>(1);
 	private LocalDate calendarDate;
 
-	public void FullCalendarView(LocalDate yearMonth) {
+	private
+	void FullCalendarView(LocalDate yearMonth) {
 		this.currentMonth = yearMonth;
 		setActualGridPaneMonthLeft.setHgap(1);
 		setActualGridPaneMonthLeft.setVgap(1);
@@ -376,14 +377,19 @@ public class CalendarController implements Initializable {
 		main.start();
 
 	}
-
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
+	
+	public void startCalendarController() {
 		currentMonth = LocalDate.now();
 		FullCalendarView(currentMonth);
 		setButtonImage();
 		setPopup();
 		setCombobox();
+
+	}
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		startCalendarController();
 	}
 
 }

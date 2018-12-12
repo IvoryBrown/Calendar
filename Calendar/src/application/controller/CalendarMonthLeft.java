@@ -22,7 +22,7 @@ public class CalendarMonthLeft {
 		calendarList.addAll(db.getAllDoctorSchedule());
 		VBox vb = new VBox();
 		vb.setPrefSize(210, 60);
-//		vb.setBackground(new Background(new BackgroundFill(Color.BLUE,null,null)));
+		// vb.setBackground(new Background(new BackgroundFill(Color.BLUE,null,null)));
 		CalendarPaneMonthRight.setTopAnchor(vb, 40.0);
 		CalendarPaneMonthRight.setLeftAnchor(vb, 5.0);
 		p.getChildren().add(vb);
@@ -33,17 +33,18 @@ public class CalendarMonthLeft {
 			if (s.equals(date)) {
 				k = k + 1;
 				Label l = new Label(calendarList.get(i).getDoctorName());
-				l.setTooltip(new Popup(calendarList.get(i).getDoctorName()+" "+calendarList.get(i).getDoctorScheduleStartTime()));
+				l.setTooltip(new Popup(calendarList.get(i).getDoctorName() + " "
+						+ calendarList.get(i).getDoctorScheduleStartTime().substring(11, 16) +" - "+calendarList.get(i).getDoctorScheduleEndTime().substring(11, 16) ));
 				l.setFont(Font.font("Verdana", FontWeight.BOLD, 11));
 				l.setStyle(" -fx-text-fill: tomato;");
-				if (k>6) {
+				if (k > 6) {
 					l.setText("...");
 					vb.getChildren().add(l);
 					return;
 				}
 				vb.getChildren().add(l);
 			}
-			
+
 		}
 	}
 }
