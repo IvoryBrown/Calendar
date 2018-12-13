@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import application.disposition.main.DispositionMain;
+import application.disposition.pojo.Doctor;
 import application.setting.AnchorBackGround;
 import application.setting.LabelSetCSS;
 import application.setting.month.CalendarPaneMinMonthRight;
@@ -22,6 +23,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
@@ -49,6 +51,8 @@ public class CalendarController implements Initializable {
 			previousMonthRightBtn, nextWeekRightBtn, previousWeekRightBtn, previousSunRightBtn, nextSunRightBtn;
 	@FXML
 	private HBox monthTurnerHBox, weekTurnerHBox, sunTurnerHBox;
+	@FXML
+	private TableView<Doctor> actualDateTableSunRight;
 
 	private LocalDate currentMonth;
 
@@ -125,6 +129,7 @@ public class CalendarController implements Initializable {
 			CalendarPaneSunRight.setTopAnchor(sunString, 5.0);
 			CalendarPaneSunRight.setLeftAnchor(sunString, 4.40);
 			p.getChildren().add(sunString);
+			new TableSun(actualDateTableSunRight,p);
 		}
 		getYearAndMonthLbl(yearMonth);
 	}
@@ -384,7 +389,12 @@ public class CalendarController implements Initializable {
 		setButtonImage();
 		setPopup();
 		setCombobox();
+		setTable();
 
+	}
+	
+	private void setTable() {
+	
 	}
 
 	@Override
