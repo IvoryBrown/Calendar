@@ -8,16 +8,21 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
 import java.time.ZoneId;
+import java.util.Arrays;
+import java.util.List;
 
 import application.disposition.database.DispositionDataBase;
 import application.disposition.pojo.Doctor;
 import application.setting.sun.CalendarPaneSunRight;
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Color;
 import javafx.util.converter.LocalDateStringConverter;
@@ -33,22 +38,22 @@ public class TableSun {
 	public TableSun(TableView<Doctor> table, CalendarPaneSunRight sun) {
 		this.table = table;
 		this.sun = sun;
+		getTable();
 		dataSunDoctor.addAll(db.getAllDoctorSchedule());
 		setTable();
-		Sel();
 	}
 
-	private void Sel() {
-		LocalTime time = LocalTime.parse("10:10");
-		for (int i = 0; i < 4; i++) {
-			LocalTime time2=	time.plusMinutes(10);
-			System.out.println(time2);
-		}
-
-	}
+private void getTable() {
+	this.table.getColumns().clear();
+	deviceColumnDoctorHours = new TableColumn<Doctor, String>("Idő");
+	deviceColumnDoctorHours.setMinWidth(60);
+	deviceColumnDoctorHours.setCellValueFactory(c -> new SimpleStringProperty(new String("123")));
+	this.table.getColumns().add(deviceColumnDoctorHours);
+}
 
 	private void setTable() {
-		this.table.getColumns().clear();
+		
+	
 		String date = String.valueOf(sun.getDate());
 		for (int i = 0; i < dataSunDoctor.size(); i++) {
 			String dateStart = dataSunDoctor.get(i).getDoctorScheduleStartTime().substring(0, 10);

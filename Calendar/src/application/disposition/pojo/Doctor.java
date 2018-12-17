@@ -6,6 +6,7 @@ public class Doctor {
 
 	private final SimpleStringProperty doctorId;
 	private final SimpleStringProperty doctorName;
+	private final SimpleStringProperty doctorHours;
 	private final SimpleStringProperty doctorTextColor;
 	private final SimpleStringProperty doctorBackgroundColor;
 	private final SimpleStringProperty doctorStatus;
@@ -18,6 +19,7 @@ public class Doctor {
 	public Doctor() {
 		this.doctorId = new SimpleStringProperty("");
 		this.doctorName = new SimpleStringProperty("");
+		this.doctorHours = new SimpleStringProperty("");
 		this.doctorTextColor = new SimpleStringProperty("");
 		this.doctorBackgroundColor = new SimpleStringProperty("");
 		this.doctorStatus = new SimpleStringProperty("");
@@ -30,6 +32,7 @@ public class Doctor {
 
 	public Doctor(String doctorName, String doctorTextColor, String doctorBackgroundColor, String doctorStatus) {
 		this.doctorName = new SimpleStringProperty(doctorName);
+		this.doctorHours = new SimpleStringProperty("");
 		this.doctorTextColor = new SimpleStringProperty(doctorTextColor);
 		this.doctorBackgroundColor = new SimpleStringProperty(doctorBackgroundColor);
 		this.doctorStatus = new SimpleStringProperty(doctorStatus);
@@ -44,6 +47,7 @@ public class Doctor {
 	public Doctor(Integer doctorId, String doctorName, String doctorTextColor, String doctorBackgroundColor,
 			String doctorStatus) {
 		this.doctorName = new SimpleStringProperty(doctorName);
+		this.doctorHours = new SimpleStringProperty("");
 		this.doctorTextColor = new SimpleStringProperty(doctorTextColor);
 		this.doctorBackgroundColor = new SimpleStringProperty(doctorBackgroundColor);
 		this.doctorStatus = new SimpleStringProperty(doctorStatus);
@@ -57,6 +61,7 @@ public class Doctor {
 
 	public Doctor(String doctorScheduleStartTime, String doctorScheduleEndTime, String doctorIddoctorScheduleId) {
 		this.doctorName = new SimpleStringProperty("");
+		this.doctorHours = new SimpleStringProperty("");
 		this.doctorTextColor = new SimpleStringProperty("");
 		this.doctorBackgroundColor = new SimpleStringProperty("");
 		this.doctorStatus = new SimpleStringProperty("");
@@ -72,6 +77,7 @@ public class Doctor {
 			String doctorStatus, String doctorScheduleId, String doctorScheduleStartTime, String doctorScheduleEndTime,
 			String doctorIddoctorScheduleId) {
 		this.doctorName = new SimpleStringProperty(doctorName);
+		this.doctorHours = new SimpleStringProperty("");
 		this.doctorTextColor = new SimpleStringProperty(doctorTextColor);
 		this.doctorBackgroundColor = new SimpleStringProperty(doctorBackgroundColor);
 		this.doctorStatus = new SimpleStringProperty(doctorStatus);
@@ -98,7 +104,7 @@ public class Doctor {
 	public void setDoctorName(String doctorName) {
 		this.doctorName.set(doctorName);
 	}
-
+	
 	public String getDoctorTextColor() {
 		return this.doctorTextColor.get();
 	}
